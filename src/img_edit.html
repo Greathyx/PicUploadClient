@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PicEdit</title>
+    <link rel="stylesheet" type="text/css" href="css/default.css">
+    <link href="css/app.css" rel="stylesheet" type="text/css">
+    <link href="css/crop.css" rel="stylesheet" type="text/css">
+</head>
+<body onload="chooseEditWay('rotate')">
+<div id="contentWrapper">
+    <div id="contentLeft">
+        <ul id="leftNavigation">
+            <li class="clickable">
+                <a href="./home.html">Home</a>
+            </li>
+            <li class="active">
+                <a href="#">PicEdit</a>
+                <ul>
+                    <li>
+                        <a id="rotate" onclick="chooseEditWay('rotate')">Rotate</a>
+                    </li>
+                    <li>
+                        <a id="crop" onclick="chooseEditWay('crop')">Crop</a>
+                    </li>
+                    <li>
+                        <a id="sticker" onclick="chooseEditWay('sticker')">Sticker</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div id="contentRight">
+        <iframe id="edit_iframe" src="./rotate.html" width=1300 height=600 frameborder="0" style="height: 100%">
+        </iframe>
+    </div>
+
+</div>
+
+<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.ssd-vertical-navigation.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('#leftNavigation').ssdVerticalNavigation();
+    });
+
+    function chooseEditWay(edit_way) {
+        var iframe_src = document.getElementById("edit_iframe").src;
+
+        if (edit_way === 'rotate') {
+            if (iframe_src !== './rotate.html') {
+                document.getElementById("edit_iframe").src = './rotate.html';
+            }
+            $("#rotate").css("color", "white");
+            $("#crop").css("color", "#adadad");
+            $("#sticker").css("color", "#adadad")
+        }
+        else if (edit_way === 'crop') {
+            if (iframe_src !== './crop.html') {
+                document.getElementById("edit_iframe").src = './crop.html';
+            }
+            $("#rotate").css("color", "#adadad");
+            $("#crop").css("color", "white");
+            $("#sticker").css("color", "#adadad")
+        }
+        else if (edit_way === 'sticker') {
+            if (iframe_src !== './sticker.html') {
+                document.getElementById("edit_iframe").src = './sticker.html'
+            }
+            $("#rotate").css("color", "#adadad");
+            $("#crop").css("color", "#adadad");
+            $("#sticker").css("color", "white")
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <meta name="description" content="simple login demo">
+    <meta name="author" content="Yuxuan Huang"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" media="screen" href="./css/style.css">
+    <link rel="stylesheet" type="text/css" href="./css/reset.css"/>
+</head>
+<body>
+
+<div id="particles-js">
+    <div class="login">
+        <div class="login-top">
+            Login
+        </div>
+        <div class="login-center clearfix">
+            <div class="login-center-img"><img src="./img/name.png"/></div>
+            <div class="login-center-input">
+                <input name="" value="" placeholder="Please enter your username/email" onfocus="this.placeholder=''"
+                       onblur="this.placeholder='Please enter your username/email'"/>
+                <div class="login-center-input-text">Username</div>
+            </div>
+        </div>
+        <div class="login-center clearfix">
+            <div class="login-center-img"><img src="./img/password.png"/></div>
+            <div class="login-center-input">
+                <input type="password" name="" value="" placeholder="Please enter your password"
+                       onfocus="this.placeholder=''" onblur="this.placeholder='Please enter your password'"/>
+                <div class="login-center-input-text">Password</div>
+            </div>
+        </div>
+        <div class="login-button" onclick="login()">
+            Login
+        </div>
+    </div>
+    <div class="sk-rotating-plane"></div>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+    function login() {
+        $.ajax({  // ajax登陆请求
+            url:"http://127.0.0.1:3000/",
+            type:"get",
+//            data:{"uname":uname,"pwd":pwd},
+            async:false,
+            success:function(res){
+                alert(res.message);
+            }
+        });
+
+//        window.location.href = "home.html"
+    }
+</script>
+</body>
+</html>

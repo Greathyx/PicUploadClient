@@ -1,0 +1,33 @@
+.raw_img {
+    max-width: 800px;
+    max-height: 600px;
+}
+
+.button_group {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    margin-left: -40px;
+    margin-top: -50px;
+}
+
+.save_button {
+    width: auto;
+}
+
+.crop_button {
+    width: auto;
+}
+
+.reset_button {
+    width: auto;
+}
+
+a.button:hover {
+    text-decoration: none;
+    color: white;
+}
+
+:global(.jcrop-holder) {
+    background-color: white;
+}

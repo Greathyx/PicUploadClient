@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Crop</title>
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8"/>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.Jcrop.js"></script>
+    <script type="text/javascript">
+        jQuery(function ($) {
+            // Create variables (in this scope) to hold the API and image size
+            var jcrop_api,
+                boundx,
+                boundy,
+
+                $pcnt = $('.wrapper .container'),
+
+                xsize = $pcnt.width(),
+                ysize = $pcnt.height();
+
+            $('#target').Jcrop({
+//                onChange: updatePreview,
+//                onSelect: updatePreview,
+                aspectRatio: xsize / ysize
+            }, function () {
+                // Use the API to get the real image size
+                var bounds = this.getBounds();
+                boundx = bounds[0];
+                boundy = bounds[1];
+                // Store the API in the jcrop_api variable
+                jcrop_api = this;
+            });
+
+            $('#reset').click(function () {
+                $('.raw_img').css({
+                    width: Math.round(boundx) + 'px',
+                    height: Math.round(boundy) + 'px',
+                    marginLeft: '0px',
+                    marginTop: '0px'
+                });
+                // Release method clears the selection
+                jcrop_api.release();
+                // Re-enable Jcrop instance
+                jcrop_api.enable();
+            });
+
+            $('#crop').click(function () {
+                // Query current selection values (true size)
+                var pic_info = jcrop_api.tellSelect();
+                var h = pic_info.h; // 截取图片的高度
+                var w = pic_info.w; // 截取图片的宽度
+                var x = pic_info.x; // 截取图片的左上角横坐标
+                var y = pic_info.y; // 截取图片的左上角纵坐标
+                var x2 = pic_info.x2; // 截取图片的右下角横坐标
+                var y2 = pic_info.y2; // 截取图片的右下角纵坐标
+
+                $('.raw_img').css({
+                    width: Math.round(boundx / w * boundx) + 'px',
+                    height: Math.round(boundy / h * boundy) + 'px',
+                    marginLeft: '-' + Math.round(boundx / w * x) + 'px',
+                    marginTop: '-' + Math.round(boundy / h * y) + 'px'
+                });
+                // Release method clears the selection
+                jcrop_api.release();
+                // Disable Jcrop instance
+                jcrop_api.disable();
+            });
+        });
+
+    </script>
+    <link rel="stylesheet" href="./css/jquery.Jcrop.css" type="text/css"/>
+    <link rel="stylesheet" href="./css/sticker.css">
+    <style type="text/css">
+        .container {
+            width: 400px;
+            height: 593px;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .raw_img {
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="container">
+        <img src="img/img_edit/test.jpg" class="raw_img" id="target" alt="Test"/>
+    </div>
+    <div class="addBtn">
+        <span id="reset" class="Button reset_button">Reset</span>
+        <span id="crop" class="Button crop_button">Crop</span>
+        <span id="save" class="Button save_button">Save</span>
+    </div>
+
+</div>
+
+</body>
+</html>
