@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <title>Login</title>
-    <meta name="description" content="simple login demo">
     <meta name="author" content="Yuxuan Huang"/>
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -20,7 +19,8 @@
         <div class="login-center clearfix">
             <div class="login-center-img"><img src="./img/name.png"/></div>
             <div class="login-center-input">
-                <input name="" value="" placeholder="Please enter your username/email" onfocus="this.placeholder=''"
+                <input id="username" value="" placeholder="Please enter your username/email"
+                       onfocus="this.placeholder=''"
                        onblur="this.placeholder='Please enter your username/email'"/>
                 <div class="login-center-input-text">Username</div>
             </div>
@@ -28,7 +28,7 @@
         <div class="login-center clearfix">
             <div class="login-center-img"><img src="./img/password.png"/></div>
             <div class="login-center-input">
-                <input type="password" name="" value="" placeholder="Please enter your password"
+                <input type="password" id="password" value="" placeholder="Please enter your password"
                        onfocus="this.placeholder=''" onblur="this.placeholder='Please enter your password'"/>
                 <div class="login-center-input-text">Password</div>
             </div>
@@ -36,6 +36,7 @@
         <div class="login-button" onclick="login()">
             Login
         </div>
+        <a href="register.html" class="a_register">Go to Register</a>
     </div>
     <div class="sk-rotating-plane"></div>
 </div>
@@ -43,17 +44,38 @@
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript">
     function login() {
-        $.ajax({  // ajax登陆请求
-            url:"http://127.0.0.1:3000/",
-            type:"get",
-//            data:{"uname":uname,"pwd":pwd},
-            async:false,
-            success:function(res){
-                alert(res.message);
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+
+        if (username === "" || password === "") {
+            alert("Please fill in the blanks!");
+            return;
+        }
+
+        $.ajax({
+            url: "http://127.0.0.1:3000/login",
+            type: "post",
+            data: {"username": username, "password": password},
+            async: false,
+            success: function (res) {
+                if (res.message === 'success') {
+                    alert("login successfully!");
+                    window.location.href = "home.html"
+                }
+                else if (res.message === "noUser") {
+                    alert("The username of" + username + "is not registered!");
+                }
+                else if (res.message === "passwordErr") {
+                    alert("The password is false!")
+                }
+                else {
+                    alert("login error!")
+                }
+            },
+            error: function () {
+                alert("login error!")
             }
         });
-
-//        window.location.href = "home.html"
     }
 </script>
 </body>

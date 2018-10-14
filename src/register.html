@@ -11,14 +11,14 @@
 <body>
 
 <div id="particles-js">
-    <div class="login">
+    <div class="login" style="height: 550px">
         <div class="login-top" style="margin-top: 70px">
             Register
         </div>
         <div class="login-center clearfix">
-            <div class="login-center-img"><img src="./img/name.png"/></div>
+            <div class="login-center-img"><img src="./img/email.png"/></div>
             <div class="login-center-input">
-                <input name="" value="" placeholder="Please enter your email" onfocus="this.placeholder=''"
+                <input id="email" value="" placeholder="Please enter your email" onfocus="this.placeholder=''"
                        onblur="this.placeholder='Please enter your email'"/>
                 <div class="login-center-input-text">Email</div>
             </div>
@@ -26,7 +26,7 @@
         <div class="login-center clearfix">
             <div class="login-center-img"><img src="./img/name.png"/></div>
             <div class="login-center-input">
-                <input name="" value="" placeholder="Please enter your username" onfocus="this.placeholder=''"
+                <input id="username" value="" placeholder="Please enter your username" onfocus="this.placeholder=''"
                        onblur="this.placeholder='Please enter your username'"/>
                 <div class="login-center-input-text">Username</div>
             </div>
@@ -34,7 +34,7 @@
         <div class="login-center clearfix">
             <div class="login-center-img"><img src="./img/password.png"/></div>
             <div class="login-center-input">
-                <input type="password" name="" value="" placeholder="Please enter your password"
+                <input id="password" type="password" value="" placeholder="Please enter your password"
                        onfocus="this.placeholder=''" onblur="this.placeholder='Please enter your password'"/>
                 <div class="login-center-input-text">Password</div>
             </div>
@@ -42,7 +42,7 @@
         <div class="login-center clearfix">
             <div class="login-center-img"><img src="./img/password.png"/></div>
             <div class="login-center-input">
-                <input type="password" name="" value="" placeholder="Please confirm your password"
+                <input id="password_confirm" type="password" value="" placeholder="Please confirm your password"
                        onfocus="this.placeholder=''" onblur="this.placeholder='Please confirm your password'"/>
                 <div class="login-center-input-text">Confirm Password</div>
             </div>
@@ -50,13 +50,55 @@
         <div class="login-button" onclick="register()">
             Register
         </div>
+        <a href="login.html" class="a_register">Go to Login</a>
     </div>
     <div class="sk-rotating-plane"></div>
 </div>
 
+<script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript">
     function register() {
-        window.location.href = "login.html"
+        const email = document.getElementById("email").value;
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const password_confirm = document.getElementById("password_confirm").value;
+
+        if (email === "" || username === "" || password === "" || password_confirm === "") {
+            alert("Please fill in the blanks!");
+            return;
+        }
+
+        // 判断输入格式是否为email
+        const regex = /^(?:\w+\.?)*\w+@(?:\w+\.)*\w+$/;
+        if (!regex.test(email)) {
+            alert("Please enter a valid email address!");
+            return;
+        }
+
+        // 如果两次密码输入不一致
+        if (password !== password_confirm) {
+            alert("The two passwords you entered are not correspond!");
+            return;
+        }
+
+        $.ajax({
+            url: "http://127.0.0.1:3000/register",
+            type: "post",
+            data: {"username": username, "email": email, "password": password},
+            async: false,
+            success: function (res) {
+                if (res.message === "success") {
+                    alert("register successfully!");
+                    window.location.href = "login.html"
+                }
+                else {
+                    alert("register error!");
+                }
+            },
+            error: function () {
+                alert("register error!");
+            }
+        });
     }
 </script>
 

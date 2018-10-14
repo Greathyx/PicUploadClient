@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <title>Homepage</title>
-    <meta name="description" content="homepage">
     <meta name="author" content="Yuxuan Huang">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/responsive.css">
 </head>
@@ -16,10 +16,10 @@
         <ul>
             <li><a href="#" style="color: white">Home</a></li>
             <li><a href="img_edit.html">PicEdit</a></li>
-            <li><a href="login.html">Login</a></li>
-            <li><a href="register.html">Register</a></li>
-            <!--<li><a href="#">Blog</a></li>-->
-            <!--<li><a href="#">Gallery</a></li>-->
+            <!--<li><a onclick="testAuth()">testAuth</a></li>-->
+            <!--<li id="login"><a href="login.html">Login</a></li>-->
+            <!--<li id="register"><a href="register.html">Register</a></li>-->
+            <li style="cursor: pointer" id="logout" onclick="logout()"><a>Logout</a></li>
         </ul>
     </div>
 </nav>
@@ -127,5 +127,57 @@
         <p>Copyright © Yuxuan Huang</p>
     </div>
 </footer>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+
+    function testAuth() {
+        $.ajax({
+            url: "http://127.0.0.1:3000/testAuth",
+            type: "get",
+            async: false,
+            success: function (res) {
+                console.log(res.auth);
+//                if (res.auth === "true") {
+//                    $("#login").css("display", "none");
+//                    $("#register").css("display", "none");
+//                    $("#logout").css("display", "inline")
+//                }
+//                else {
+//                    $("#logout").css("display", "inline");
+//                    $("#login").css("display", "none");
+//                    $("#register").css("display", "none")
+//                }
+            },
+            error: function (res) {
+                console.log(res.auth);
+//                $("#logout").css("display", "inline");
+//                $("#login").css("display", "none");
+//                $("#register").css("display", "none")
+            }
+        });
+    }
+
+    function logout() {
+        $.ajax({
+            url: "http://127.0.0.1:3000/logout",
+            type: "get",
+            async: false,
+            success: function (res) {
+                if (!res.auth) {
+                    alert("logout successfully!");
+                    window.location.href = "login.html"
+                }
+                else {
+                    alert("logout error!")
+                }
+            },
+            error: function () {
+                alert("logout error!")
+            }
+        });
+    }
+</script>
+
 </body>
 </html>
