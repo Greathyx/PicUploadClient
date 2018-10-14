@@ -85,7 +85,6 @@
             url: "http://127.0.0.1:3000/register",
             type: "post",
             data: {"username": username, "email": email, "password": password},
-            async: false,
             success: function (res) {
                 if (res.message === "success") {
                     alert("register successfully!");

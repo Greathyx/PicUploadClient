@@ -56,7 +56,10 @@
             url: "http://127.0.0.1:3000/login",
             type: "post",
             data: {"username": username, "password": password},
-            async: false,
+            dataType:"json",
+            xhrFields: {
+                withCredentials: true
+            },
             success: function (res) {
                 if (res.message === 'success') {
                     alert("login successfully!");
