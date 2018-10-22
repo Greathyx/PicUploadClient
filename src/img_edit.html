@@ -9,7 +9,7 @@
     <link href="css/app.css" rel="stylesheet" type="text/css">
     <link href="css/crop.css" rel="stylesheet" type="text/css">
 </head>
-<body onload="chooseEditWay('rotate')">
+<body onload="initialize()">
 <div id="contentWrapper">
     <div id="contentLeft">
         <ul id="leftNavigation">
@@ -19,6 +19,9 @@
             <li class="active">
                 <a href="#">PicEdit</a>
                 <ul>
+                    <li>
+                        <a id="upload" onclick="chooseEditWay('upload')">Upload</a>
+                    </li>
                     <li>
                         <a id="rotate" onclick="chooseEditWay('rotate')">Rotate</a>
                     </li>
@@ -47,13 +50,27 @@
         $('#leftNavigation').ssdVerticalNavigation();
     });
 
+    function initialize() {
+        chooseEditWay('upload');
+    }
+
     function chooseEditWay(edit_way) {
         var iframe_src = document.getElementById("edit_iframe").src;
 
-        if (edit_way === 'rotate') {
+        if (edit_way === 'upload') {
+            if (iframe_src !== './upload.html') {
+                document.getElementById("edit_iframe").src = './upload.html';
+            }
+            $("#upload").css("color", "white");
+            $("#rotate").css("color", "#adadad");
+            $("#crop").css("color", "#adadad");
+            $("#sticker").css("color", "#adadad")
+        }
+        else if (edit_way === 'rotate') {
             if (iframe_src !== './rotate.html') {
                 document.getElementById("edit_iframe").src = './rotate.html';
             }
+            $("#upload").css("color", "#adadad");
             $("#rotate").css("color", "white");
             $("#crop").css("color", "#adadad");
             $("#sticker").css("color", "#adadad")
@@ -62,6 +79,7 @@
             if (iframe_src !== './crop.html') {
                 document.getElementById("edit_iframe").src = './crop.html';
             }
+            $("#upload").css("color", "#adadad");
             $("#rotate").css("color", "#adadad");
             $("#crop").css("color", "white");
             $("#sticker").css("color", "#adadad")
@@ -70,6 +88,7 @@
             if (iframe_src !== './sticker.html') {
                 document.getElementById("edit_iframe").src = './sticker.html'
             }
+            $("#upload").css("color", "#adadad");
             $("#rotate").css("color", "#adadad");
             $("#crop").css("color", "#adadad");
             $("#sticker").css("color", "white")

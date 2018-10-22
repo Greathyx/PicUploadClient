@@ -128,14 +128,6 @@
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript">
-    $.ajaxSetup({
-        authError: function (callback) {
-            刷新身份认证方法(function () {
-                callback && callback();
-            });
-        }
-    });
-
     function testAuth() {
         $.ajax({
             url: "http://127.0.0.1:3000/testAuth",

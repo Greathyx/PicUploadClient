@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=0,minimal-ui">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Upload</title>
+    <link href="css/upload.css" type="text/css" rel="stylesheet"/>
+    <link rel="stylesheet" href="./css/sticker.css">
+</head>
+<body>
+
+<div class="img-box full">
+    <section class=" img-section">
+        <p class="up-p">Upload Image：<span class="up-span">You can at most upload 5 pictures one time.</span></p>
+        <div class="z_photo upimg-div clear">
+
+            <section class="z_file fl">
+                <img src="img/upload/upload.png" class="add-img">
+                <input type="file" name="file" id="file" class="file" value=""
+                       accept="image/jpg,image/jpeg,image/png,image/bmp,image/JPG" multiple/>
+            </section>
+        </div>
+    </section>
+    <div class="addBtn">
+        <span class="Button" onclick="uploadImg()">Upload</span>
+        <span class="Button" onclick="clearUpload()">Clear</span>
+    </div>
+</div>
+<aside class="mask works-mask">
+    <div class="mask-content">
+        <p class="del-p">Are you sure to delete it?</p>
+        <p class="check-p"><span class="del-com wsdel-ok">Yes</span><span class="wsdel-no">No</span></p>
+    </div>
+</aside>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/JquerySession.js"></script>
+<script src="js/imgUp.js"></script>
+<script type="text/javascript">
+    function uploadImg(isClear) {
+        var data = new FormData();
+        var files = document.getElementById("file").files;
+        data.append("file1", files[0]);
+        data.append("file2", files[1]);
+        data.append("file3", files[2]);
+        data.append("file4", files[3]);
+        data.append("file5", files[4]);
+        $.ajax({
+            url: "http://127.0.0.1:3000/uploadPics",
+            type: "post",
+            data: data,
+            processData: false,  // tell jQuery not to process the data，这个是必须的，否则会报错
+            contentType: false,
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (res) {
+                if (res.message === "success") {
+                    $.session.set('imgUrlList', res.imgUrlList);
+                    var imgUrlList = $.session.get('imgUrlList');
+                    console.log(imgUrlList)
+//                    alert("Upload successfully! You can now go on to edit your pictures.");
+                }
+                else {
+                    alert("Upload error!")
+                }
+            },
+            error: function () {
+                alert("Upload error!")
+            }
+        });
+    }
+
+    function clearUpload() {
+        $.ajax({
+            url: "http://127.0.0.1:3000/clearUploadSession",
+            type: "get",
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (res) {
+                if (res.message === "success") {
+                    $.session.set('imgUrlList', res.imgUrlList);
+                    var imgUrlList = $.session.get('imgUrlList');
+                    console.log(imgUrlList);
+                    alert("Clear images successfully!")
+                }
+                else {
+                    alert("Clear upload error!")
+                }
+            },
+            error: function () {
+                alert("Clear upload error!")
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
