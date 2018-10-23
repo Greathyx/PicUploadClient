@@ -62,11 +62,6 @@
             success: function (res) {
                 if (res.message === "success") {
                     $.session.set('imgUrlList', res.imgUrlList);
-                    $.session.set('imgNameList', res.imgNameList);
-                    var imgUrlList = $.session.get('imgUrlList');
-                    console.log("imgUrlList", imgUrlList);
-                    var imgNameList = $.session.get('imgNameList');
-                    console.log("imgNameList", imgNameList);
                     alert("Upload successfully! You can now go on to edit your pictures.");
                 }
                 else {
@@ -89,11 +84,6 @@
             success: function (res) {
                 if (res.message === "success") {
                     $.session.set('imgUrlList', res.imgUrlList);
-                    $.session.set('imgNameList', res.imgNameList);
-                    var imgUrlList = $.session.get('imgUrlList');
-                    console.log("imgUrlList", imgUrlList);
-                    var imgNameList = $.session.get('imgNameList');
-                    console.log("imgNameList", imgNameList);
                     alert("Clear images successfully!")
                 }
                 else {

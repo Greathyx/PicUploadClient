@@ -19,17 +19,28 @@
         }
     </style>
 </head>
-<body>
+<body onload="initPics()">
 
 <div class="container">
-    <img src="img/img_edit/test.jpg" onclick="choosePic(this)">
-    <img src="img/img_edit/test2.jpg" onclick="choosePic(this)">
-    <img src="img/img_edit/test3.jpg" onclick="choosePic(this)">
+    <!--<img src="img/img_edit/test.jpg" onclick="choosePic(this)">-->
+    <!--<img src="img/img_edit/test2.jpg" onclick="choosePic(this)">-->
+    <!--<img src="img/img_edit/test3.jpg" onclick="choosePic(this)">-->
 </div>
 
 <script src="js/jquery.min.js"></script>
 <script src="js/JquerySession.js"></script>
 <script type="text/javascript">
+    function initPics() {
+        var imgUrlList = $.session.get('imgUrlList').split(',');
+        for (var i = 0; i < imgUrlList.length; i++) {
+            var $img = $('<img src=' + imgUrlList[i] + '>');
+            $img.click(function () {
+                choosePic(this);
+            });
+            $(".container").append($img);
+        }
+    }
+
     function choosePic(element) {
 //        $.session.set('presentImg', element.src);
         var editPage = $.session.get('editPage');
