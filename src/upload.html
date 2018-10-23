@@ -43,8 +43,13 @@
 <script src="js/imgUp.js"></script>
 <script type="text/javascript">
     function uploadImg() {
-        var data = new FormData();
         var files = document.getElementById("file").files;
+        if (files[0] === undefined || files[0] === null) {
+            alert("Please upload at least one image!");
+            return;
+        }
+
+        var data = new FormData();
         data.append("file1", files[0]);
         data.append("file2", files[1]);
         data.append("file3", files[2]);
@@ -63,6 +68,7 @@
                 if (res.message === "success") {
                     $.session.set('imgUrlList', res.imgUrlList);
                     alert("Upload successfully! You can now go on to edit your pictures.");
+                    location.reload();
                 }
                 else {
                     alert("Upload error!")
