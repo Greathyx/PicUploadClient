@@ -1177,6 +1177,13 @@
     });
 
     $('.js-addImage').on('click', function () {
+        var img_src = document.getElementById('img_edit').src;
+        mc.background(img_src, {
+            type: 'origin',
+            left: '50%',
+            top: '50%'
+        });
+
         var type = 'image';
         showDialog(type, data.addImageOps);
     });

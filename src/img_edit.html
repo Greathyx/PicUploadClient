@@ -37,7 +37,7 @@
     </div>
 
     <div id="contentRight">
-        <iframe id="edit_iframe" src="./rotate.html" width=1300 height=600 frameborder="0" style="height: 100%">
+        <iframe id="edit_iframe" src="./rotate.html" height=600 frameborder="0" style="height: 100%">
         </iframe>
     </div>
 
@@ -45,12 +45,15 @@
 
 <script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 <script type="text/javascript" src="js/jquery.ssd-vertical-navigation.min.js"></script>
+<script src="js/JquerySession.js"></script>
 <script type="text/javascript">
     $(function () {
         $('#leftNavigation').ssdVerticalNavigation();
     });
 
     function initialize() {
+        // window.screen.width 物理屏幕宽度
+        $("#edit_iframe").css("width", window.screen.width - 250);
         chooseEditWay('upload');
     }
 
@@ -67,6 +70,7 @@
             $("#sticker").css("color", "#adadad")
         }
         else if (edit_way === 'rotate') {
+            $.session.set('editPage', 'rotate');
             if (iframe_src !== './rotate.html') {
                 document.getElementById("edit_iframe").src = './rotate.html';
             }
@@ -76,6 +80,7 @@
             $("#sticker").css("color", "#adadad")
         }
         else if (edit_way === 'crop') {
+            $.session.set('editPage', 'crop');
             if (iframe_src !== './crop.html') {
                 document.getElementById("edit_iframe").src = './crop.html';
             }
@@ -85,6 +90,7 @@
             $("#sticker").css("color", "#adadad")
         }
         else if (edit_way === 'sticker') {
+            $.session.set('editPage', 'sticker');
             if (iframe_src !== './sticker.html') {
                 document.getElementById("edit_iframe").src = './sticker.html'
             }

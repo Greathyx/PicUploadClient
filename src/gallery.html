@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Gallery</title>
+    <style type="text/css">
+        .container {
+            flex-wrap: nowrap;
+            height: 260px;
+        }
+
+        img {
+            height: inherit;
+            width: 200px;
+            display: inline;
+            object-fit: cover;
+            padding: 0 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <img src="img/img_edit/test.jpg" onclick="choosePic(this)">
+    <img src="img/img_edit/test2.jpg" onclick="choosePic(this)">
+    <img src="img/img_edit/test3.jpg" onclick="choosePic(this)">
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script src="js/JquerySession.js"></script>
+<script type="text/javascript">
+    function choosePic(element) {
+//        $.session.set('presentImg', element.src);
+        var editPage = $.session.get('editPage');
+
+        if (editPage === "rotate") {
+            $(window.parent.document).find("#img_rotate").attr("src", element.src);
+        }
+        else if (editPage === "crop") {
+            // 这里直接操作JCrop的img对象
+            $(window.parent.document).find(".jcrop-holder img").attr("src", element.src);
+        }
+        else if (editPage === "sticker") {
+            $(window.parent.document).find("#img_edit").attr("src", element.src);
+        }
+    }
+</script>
+</body>
+</html>

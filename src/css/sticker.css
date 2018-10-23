@@ -162,7 +162,8 @@ html, body {
 }
 
 .wrapper {
-    padding-top: 60px;
+    /*margin-left: -180px;*/
+    padding-top: 50px;
     height: auto;
 }
 

@@ -10,34 +10,39 @@
 </head>
 <body>
 
-<div class="img-box full">
-    <section class=" img-section">
-        <p class="up-p">Upload Image：<span class="up-span">You can at most upload 5 pictures one time.</span></p>
-        <div class="z_photo upimg-div clear">
+<div class="wrapper">
+    <div class="img-box full">
+        <section class=" img-section">
+            <p class="up-p">Upload Image：<span class="up-span">You can at most upload 5 pictures one time.</span></p>
+            <div class="z_photo upimg-div clear">
 
-            <section class="z_file fl">
-                <img src="img/upload/upload.png" class="add-img">
-                <input type="file" name="file" id="file" class="file" value=""
-                       accept="image/jpg,image/jpeg,image/png,image/bmp,image/JPG" multiple/>
-            </section>
+                <section class="z_file fl">
+                    <img src="img/upload/upload.png" class="add-img">
+                    <input type="file" name="file" id="file" class="file" value=""
+                           accept="image/jpg,image/jpeg,image/png,image/bmp,image/JPG" multiple/>
+                </section>
+            </div>
+        </section>
+        <div class="addBtn">
+            <span class="Button" onclick="uploadImg()">Upload</span>
+            <span class="Button" onclick="clearUpload()">Clear</span>
         </div>
-    </section>
-    <div class="addBtn">
-        <span class="Button" onclick="uploadImg()">Upload</span>
-        <span class="Button" onclick="clearUpload()">Clear</span>
     </div>
+    <iframe src="./gallery.html" width=1000 height=300 frameborder="0" style="margin-top: 30px">
+    </iframe>
+    <aside class="mask works-mask">
+        <div class="mask-content">
+            <p class="del-p">Are you sure to delete it?</p>
+            <p class="check-p"><span class="del-com wsdel-ok">Yes</span><span class="wsdel-no">No</span></p>
+        </div>
+    </aside>
 </div>
-<aside class="mask works-mask">
-    <div class="mask-content">
-        <p class="del-p">Are you sure to delete it?</p>
-        <p class="check-p"><span class="del-com wsdel-ok">Yes</span><span class="wsdel-no">No</span></p>
-    </div>
-</aside>
+
 <script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/JquerySession.js"></script>
 <script src="js/imgUp.js"></script>
 <script type="text/javascript">
-    function uploadImg(isClear) {
+    function uploadImg() {
         var data = new FormData();
         var files = document.getElementById("file").files;
         data.append("file1", files[0]);
@@ -57,9 +62,12 @@
             success: function (res) {
                 if (res.message === "success") {
                     $.session.set('imgUrlList', res.imgUrlList);
+                    $.session.set('imgNameList', res.imgNameList);
                     var imgUrlList = $.session.get('imgUrlList');
-                    console.log(imgUrlList)
-//                    alert("Upload successfully! You can now go on to edit your pictures.");
+                    console.log("imgUrlList", imgUrlList);
+                    var imgNameList = $.session.get('imgNameList');
+                    console.log("imgNameList", imgNameList);
+                    alert("Upload successfully! You can now go on to edit your pictures.");
                 }
                 else {
                     alert("Upload error!")
@@ -81,8 +89,11 @@
             success: function (res) {
                 if (res.message === "success") {
                     $.session.set('imgUrlList', res.imgUrlList);
+                    $.session.set('imgNameList', res.imgNameList);
                     var imgUrlList = $.session.get('imgUrlList');
-                    console.log(imgUrlList);
+                    console.log("imgUrlList", imgUrlList);
+                    var imgNameList = $.session.get('imgNameList');
+                    console.log("imgNameList", imgNameList);
                     alert("Clear images successfully!")
                 }
                 else {

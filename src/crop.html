@@ -79,21 +79,26 @@
 
         .raw_img {
             width: 100%;
+            object-fit: cover;
+        }
+
+        .jcrop-holder img {
+            object-fit: cover;
         }
     </style>
 </head>
 <body>
-
 <div class="wrapper">
     <div class="container">
-        <img src="img/img_edit/test.jpg" class="raw_img" id="target" alt="Test"/>
+        <img src="img/img_edit/test.jpg" class="raw_img" id="target" alt=""/>
     </div>
     <div class="addBtn">
         <span id="reset" class="Button reset_button">Reset</span>
         <span id="crop" class="Button crop_button">Crop</span>
         <span id="save" class="Button save_button">Save</span>
     </div>
-
+    <iframe src="./gallery.html" width=1000 height=300 frameborder="0" style="margin-top: 30px">
+    </iframe>
 </div>
 
 </body>

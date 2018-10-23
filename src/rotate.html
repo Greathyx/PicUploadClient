@@ -38,18 +38,20 @@
 <div class="wrapper">
     <div class="top">
         <img id="img_rotate" class="origin" src="./img/img_edit/test3.jpg" alt="Cate Blanchett">
+        <!--<img id="img_rotate" class="origin" src="" alt="">-->
     </div>
     <div class="addBtn">
         <span class="Button rotate_left" onclick="rotateLeft()">Rotate Left</span>
         <span class="Button rotate_right" onclick="rotateRight()">Rotate Right</span>
         <span class="Button js-save">Save</span>
     </div>
+    <iframe src="./gallery.html" width=1000 height=300 frameborder="0" style="margin-top: 30px">
+    </iframe>
 </div>
 
 <script src="js/jquery.min.js"></script>
 <script src="js/jQueryRotate.js"></script>
 <script type="text/javascript">
-
     var value = 0;
 
     function rotateRight() {
@@ -62,7 +64,5 @@
         $("#img_rotate").rotate({animateTo: value});
     }
 </script>
-
-
 </body>
 </html>
