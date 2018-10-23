@@ -90,7 +90,8 @@
             success: function (res) {
                 if (res.message === "success") {
                     $.session.set('imgUrlList', res.imgUrlList);
-                    alert("Clear images successfully!")
+                    alert("Clear images successfully!");
+                    location.reload();
                 }
                 else {
                     alert("Clear upload error!")
