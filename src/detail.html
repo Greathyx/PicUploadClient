@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>zGrayPhoto</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="css/zerogrid.css">
+    <link rel="stylesheet" href="css/homepage.css">
+    <script src="js/jquery-latest.min.js"></script>
+    <script src="js/script.js"></script>
+</head>
+<body onload="init()">
+<div class="wrap-body">
+    <!--Header-->
+    <header>
+        <div class="wrap-header zerogrid">
+            <div class="row">
+                <div id="cssmenu">
+                    <ul>
+                        <li class='active'><a href="homepage.html">Home</a></li>
+                        <li><a href="img_edit.html">PicEdit</a></li>
+                        <li id="login"><a href="login.html">Login</a></li>
+                        <li id="register"><a href="register.html">Register</a></li>
+                        <li style="cursor: pointer" id="logout" onclick="logout()"><a>Logout</a></li>
+                    </ul>
+                </div>
+                <a href='#' class="logo"><img src="img/homepage/logo.png"/></a>
+            </div>
+        </div>
+    </header>
+
+    <!--Container-->
+    <section id="container">
+        <div class="zerogrid">
+            <div class="wrap-container clearfix">
+                <div id="main-content">
+                    <div class="row wrap-content"><!--Start Box-->
+                        <div class="header">
+                            <h1>Save Your Lovely Moments</h1>
+                            <span id="tags"></span>
+                        </div>
+                        <div class="row">
+                            <img alt="picture" src="" id="detailImg"/>
+                            <div class="info">
+                                <h2>Add a tag</h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus odio illo
+                                    ullam assumenda qui, quia, aut temporibus incidunt placeat eum sint quos! Asperiores
+                                    ipsum, quas quae aut! Laboriosam in deleniti ratione blanditiis nam, at quisquam
+                                    voluptas, ad dolorum facere veniam nihil corrupti quos cum voluptatem ea nostrum
+                                    nisi sunt, a dignissimos repellat voluptates! Minus veniam quibusdam adipisci ea
+                                    magni quia velit repudiandae iure impedit enim. Asperiores eos natus nihil, rem
+                                    beatae, labore quis, dolorum enim magni autem quas suscipit eligendi.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script src="js/JquerySession.js"></script>
+<script type="text/javascript">
+    function init() {
+        var imgUrl = $.session.get('detailImgUrl');
+        var imgTags = $.session.get('detailImgTags');
+        $('#detailImg').attr("src", imgUrl);
+        var $tags = $('<div>tags: '+ imgTags +'</div>');
+        $("#tags").append($tags);
+
+        // testAuth
+        $.ajax({
+            url: "http://127.0.0.1:3000/testAuth",
+            type: "get",
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (res) {
+                if (res.auth) {
+                    $("#login").css("display", "none");
+                    $("#register").css("display", "none");
+                    $("#logout").css("display", "inline")
+                }
+                else {
+                    $("#logout").css("display", "none");
+                    $("#login").css("display", "inline");
+                    $("#register").css("display", "inline")
+                }
+            },
+            error: function () {
+                $("#logout").css("display", "none");
+                $("#login").css("display", "inline");
+                $("#register").css("display", "inline")
+            }
+        });
+    }
+</script>
+</body>
+</html>
