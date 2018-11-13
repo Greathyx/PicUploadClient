@@ -29,8 +29,8 @@
                 <a class="logo"><img src="img/homepage/logo.png"/></a>
                 <div class="wrap clearfix">
                     <div class="header">
-                        <input class="intCity" type="text" placeholder="Search a tag" value="">
-                        <input class="seachBtn" type="button" value="Seach">
+                        <input id="searchField" class="intCity" placeholder="Search a tag" value="">
+                        <input class="seachBtn" type="button" value="Seach" onclick="search()">
                     </div>
                 </div>
             </div>
@@ -46,11 +46,18 @@
                         <!--Start Box-->
                         <div class="header">
                             <h1>Save Your Lovely Moments</h1>
-                            <span>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                <br/>
-                                Iste ratione molestias magni.
-                            </span>
+                            <!--<span>-->
+                            <!--Lorem ipsum dolor sit amet, consectetur adipisicing elit.-->
+                            <!--<br/>-->
+                            <!--Iste ratione molestias magni.-->
+                            <!--</span>-->
+                            <div class="wrap clearfix">
+                                <div class="header">
+                                    <input class="sort" type="button" value="popular" onclick="sort('popular')">
+                                    <input class="sort" type="button" value="newest" onclick="sort('newest')">
+                                    <input class="sort" type="button" value="all tags" onclick="seeAllTags()">
+                                </div>
+                            </div>
                         </div>
                         <div class="row" id="container_row"></div>
                     </div>
@@ -99,47 +106,7 @@
             },
             success: function (res) {
                 var imgList = res.imgList;
-
-                var index = 0;
-                var $wrap_col = $('<div class="wrap-col"></div>');
-                var $col_1_3 = $('<div class="col-1-3"></div>');
-
-                for (var i = 0; i < imgList.length; i++) {
-                    index++;
-
-                    var $item_container = $('<div class="item-container"></div>');
-                    var $a = $('<a href="detail.html" name='+ imgList[i].tags +'></a>');
-                    $a.click(function () {
-                        toDetailPage(this);
-                    });
-                    $item_container.append($a);
-
-                    var $item_caption = $('<div class="item-caption"></div>');
-                    var $img = $('<img id="a_img" src=' + imgList[i].url + '>');
-                    $a.append($item_caption);
-                    $a.append($img);
-
-                    var $item_caption_inner = $('<div class="item-caption-inner"></div>');
-                    $item_caption.append($item_caption_inner);
-
-                    var $item_caption_inner1 = $('<div class="item-caption-inner1"></div>');
-                    $item_caption_inner.append($item_caption_inner1);
-
-                    var $h3 = $('<h3>Lorem ipsum</h3>');
-                    var $span = $('<span id="a_span">' + imgList[i].tags + '</span>');
-                    $item_caption_inner1.append($h3);
-                    $item_caption_inner1.append($span);
-
-                    $wrap_col.append($item_container);
-
-                    if (index % 4 === 0) {
-                        $col_1_3.append($wrap_col);
-                        $("#container_row").append($col_1_3);
-                        $col_1_3 = $('<div class="col-1-3"></div>');
-                        $wrap_col = $('<div class="wrap-col"></div>');
-                        index = 0;
-                    }
-                }
+                drawPicsGrid(imgList);
             },
             error: function () {
                 alert("Internal server error!")
@@ -147,9 +114,138 @@
         });
     }
 
+    function drawPicsGrid(imgList) {
+        var index = 0;
+        var $wrap_col = $('<div class="wrap-col"></div>');
+        var $col_1_3 = $('<div class="col-1-3"></div>');
+
+        for (var i = 0; i < imgList.length; i++) {
+            index++;
+
+            var $item_container = $('<div class="item-container"></div>');
+            var $a = $('<a style="cursor: pointer"></a>');
+            $a.click(function () {
+                toDetailPage(this);
+            });
+            $item_container.append($a);
+
+            var $item_caption = $('<div class="item-caption"></div>');
+            var $img = $('<img id="a_img" src=' + imgList[i].url + '>');
+            $a.append($item_caption);
+            $a.append($img);
+
+            var $item_caption_inner = $('<div class="item-caption-inner"></div>');
+            $item_caption.append($item_caption_inner);
+
+            var $item_caption_inner1 = $('<div class="item-caption-inner1"></div>');
+            $item_caption_inner.append($item_caption_inner1);
+
+            var $h3 = $('<h3>' + imgList[i].createdDate + '</h3>');
+            var $span = $('<span id="a_span">' + imgList[i].tags + '</span>');
+            $item_caption_inner1.append($h3);
+            $item_caption_inner1.append($span);
+
+            $wrap_col.append($item_container);
+
+            if (index % 4 === 0 || imgList.length < 4) {
+                $col_1_3.append($wrap_col);
+                $("#container_row").append($col_1_3);
+                $col_1_3 = $('<div class="col-1-3"></div>');
+                $wrap_col = $('<div class="wrap-col"></div>');
+                index = 0;
+            }
+        }
+    }
+
     function toDetailPage(element) {
+        var url = $(element).children('#a_img')[0].currentSrc;
         $.session.set('detailImgUrl', $(element).children('#a_img')[0].currentSrc);
-        $.session.set('detailImgTags', element.name);
+
+        $.ajax({
+            url: "http://127.0.0.1:3000/addPopularity",
+            type: "post",
+            data: {"url": url},
+            dataType: "json",
+            success: function (res) {
+                var pic = res.picture;
+                $.session.set('detailImgTags', pic.tags);
+                $.session.set('visitTimes', pic.visitTimes);
+                $.session.set('createdDate', pic.createdDate);
+                window.location.href = "detail.html";
+            },
+            error: function () {
+                alert("Internal server error!")
+            }
+        });
+    }
+
+    function search() {
+        var searchValue = $("#searchField").val();
+        if (searchValue === "") {
+            return
+        }
+        $.ajax({
+            url: "http://127.0.0.1:3000/getPicsByTag",
+            type: "post",
+            data: {"tag": searchValue},
+            dataType: "json",
+            success: function (res) {
+                $("#container_row").empty();
+                var imgList = res.imgList;
+                drawPicsGrid(imgList);
+            },
+            error: function () {
+                alert("Internal server error!")
+            }
+        });
+    }
+
+    function sort(sortWay) {
+        $.ajax({
+            url: "http://127.0.0.1:3000/sort",
+            type: "post",
+            data: {"sortWay": sortWay},
+            dataType: "json",
+            success: function (res) {
+                $("#container_row").empty();
+                var imgList = res.imgList;
+                drawPicsGrid(imgList);
+            },
+            error: function () {
+                alert("Internal server error!")
+            }
+        });
+    }
+
+    function seeAllTags() {
+        $.ajax({
+            url: "http://127.0.0.1:3000/seeAllTags",
+            type: "get",
+            success: function (res) {
+                $("#container_row").empty();
+                var $table = $('<table border="1"></table>');
+                var $tr = $('<tr></tr>');
+                var $th_tag = $('<th>tag</th>');
+                var $th_visited_times = $('<th>visited times</th>');
+                $tr.append($th_tag);
+                $tr.append($th_visited_times);
+                $table.append($tr);
+
+                var tagDic = res.tagDic;
+                for (var key in tagDic) {
+                    var $tr2 = $('<tr></tr>');
+                    var $td_tag = $('<td>' + key + '</td>');
+                    var $td_visited_times = $('<td>' + tagDic[key] + '</td>');
+                    $tr2.append($td_tag);
+                    $tr2.append($td_visited_times);
+                    $table.append($tr2);
+                }
+                $("#container_row").append($table);
+            },
+            error: function () {
+                alert("Internal server error!")
+            }
+        });
     }
 
     function logout() {

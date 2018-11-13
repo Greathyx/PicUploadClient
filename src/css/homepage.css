@@ -26,9 +26,10 @@ blockquote, q {
 }
 
 table, table td {
-    padding: 0;
+    padding: 10px;
     border: none;
-    border-collapse: collapse;
+    text-align: center;
+    /*border-collapse: collapse;*/
 }
 
 img {

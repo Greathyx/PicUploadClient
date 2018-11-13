@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="css/zerogrid.css">
     <link rel="stylesheet" href="css/homepage.css">
+    <link rel="stylesheet" href="css/search.css">
     <script src="js/jquery-latest.min.js"></script>
     <script src="js/script.js"></script>
 </head>
@@ -38,19 +39,19 @@
                     <div class="row wrap-content"><!--Start Box-->
                         <div class="header">
                             <h1>Save Your Lovely Moments</h1>
-                            <span id="tags"></span>
+                            <span>Add your tag here!</span>
+                            <div class="wrap clearfix">
+                                <div class="header" style="margin-left: -10px">
+                                    <input id="tagField" class="intCity" placeholder="Add a tag" value="">
+                                    <input class="seachBtn" type="button" value="Add" onclick="addTag()">
+                                </div>
+                            </div>
                         </div>
                         <div class="row">
                             <img alt="picture" src="" id="detailImg"/>
                             <div class="info">
-                                <h2>Add a tag</h2>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Necessitatibus odio illo
-                                    ullam assumenda qui, quia, aut temporibus incidunt placeat eum sint quos! Asperiores
-                                    ipsum, quas quae aut! Laboriosam in deleniti ratione blanditiis nam, at quisquam
-                                    voluptas, ad dolorum facere veniam nihil corrupti quos cum voluptatem ea nostrum
-                                    nisi sunt, a dignissimos repellat voluptates! Minus veniam quibusdam adipisci ea
-                                    magni quia velit repudiandae iure impedit enim. Asperiores eos natus nihil, rem
-                                    beatae, labore quis, dolorum enim magni autem quas suscipit eligendi.</p>
+                                <h2>Details</h2>
+                                <p id="info"></p>
                             </div>
                         </div>
                     </div>
@@ -66,9 +67,16 @@
     function init() {
         var imgUrl = $.session.get('detailImgUrl');
         var imgTags = $.session.get('detailImgTags');
+        var createdDate = $.session.get('createdDate');
+        var visitTimes = $.session.get('visitTimes');
+
         $('#detailImg').attr("src", imgUrl);
-        var $tags = $('<div>tags: '+ imgTags +'</div>');
-        $("#tags").append($tags);
+        var $tags = $('<div id="tag_div">tag: ' + imgTags + '</div>');
+        $("#info").append($tags);
+        var $createTime = $('<div>created date: ' + createdDate + '</div>');
+        $("#info").append($createTime);
+        var $visitTimes = $('<div>visited times: ' + visitTimes + '</div>');
+        $("#info").append($visitTimes);
 
         // testAuth
         $.ajax({
@@ -93,6 +101,32 @@
                 $("#logout").css("display", "none");
                 $("#login").css("display", "inline");
                 $("#register").css("display", "inline")
+            }
+        });
+    }
+
+    function addTag() {
+        var newTag = $("#tagField").val();
+        if (newTag === "") {
+            return
+        }
+        var imgUrl = $.session.get('detailImgUrl');
+
+        $.ajax({
+            url: "http://127.0.0.1:3000/addTag",
+            type: "post",
+            data: {"url": imgUrl, "newTag": newTag},
+            dataType: "json",
+            success: function (res) {
+//                $("#tag_div").remove();
+                $.session.set('detailImgTags', res.newTag);
+                alert("Add your new tag successfully!");
+                window.location.reload();
+//                var $tags = $('<div id="tag_div">tag: ' + res.newTag + '</div>');
+//                $("#info").prepend($tags);
+            },
+            error: function () {
+                alert("Internal server error!")
             }
         });
     }
