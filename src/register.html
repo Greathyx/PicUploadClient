@@ -56,6 +56,7 @@
 </div>
 
 <script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/crypto-js.js"></script>
 <script type="text/javascript">
     function register() {
         const email = document.getElementById("email").value;
@@ -81,10 +82,15 @@
             return;
         }
 
+        // Encrypt
+        const username_ciphered = CryptoJS.AES.encrypt(username, 'username_key').toString();
+        const email_ciphered = CryptoJS.AES.encrypt(email, 'email_key').toString();
+        const password_ciphered = CryptoJS.AES.encrypt(password, 'password_key').toString();
+
         $.ajax({
             url: "http://127.0.0.1:3000/register",
             type: "post",
-            data: {"username": username, "email": email, "password": password},
+            data: {"username": username_ciphered, "email": email_ciphered, "password": password_ciphered},
             success: function (res) {
                 if (res.message === "success") {
                     alert("register successfully!");
