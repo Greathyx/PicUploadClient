@@ -21,6 +21,7 @@
                     <ul>
                         <li class='active'><a href="homepage.html">Home</a></li>
                         <li><a href="img_edit.html">PicEdit</a></li>
+                        <li style="cursor: pointer" onclick="getWeather()"><a>Weather</a></li>
                         <li id="login"><a href="login.html">Login</a></li>
                         <li id="register"><a href="register.html">Register</a></li>
                         <li style="cursor: pointer" id="logout" onclick="logout()"><a>Logout</a></li>
@@ -241,6 +242,27 @@
                     $table.append($tr2);
                 }
                 $("#container_row").append($table);
+            },
+            error: function () {
+                alert("Internal server error!")
+            }
+        });
+    }
+
+    function getWeather() {
+        $.ajax({
+            url: "https://restapi.amap.com/v3/weather/weatherInfo?city=320100&key=408ce510c1b7aff2672f750e7cbd80a6",
+            type: "get",
+            success: function (res) {
+                const weather_info = res.lives[0];
+                alert('province: ' + weather_info.province + '省' + '\n'
+                    + 'city: ' + weather_info.city + '\n'
+                    + 'humidity: ' + weather_info.humidity + '\n'
+                    + 'temperature: ' + weather_info.temperature + '\n'
+                    + 'weather: ' + weather_info.weather + '\n'
+                    + 'wind direction: ' + weather_info.winddirection + '风' + '\n'
+                    + 'wind power: ' + weather_info.windpower + '\n'
+                    + 'report time: ' + weather_info.reporttime);
             },
             error: function () {
                 alert("Internal server error!")
